@@ -1,0 +1,88 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+public class Runner {
+
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public static int[][] takeInput() throws IOException {
+
+        String[] nm;
+        nm = br.readLine().split("\\s");
+        int n = Integer.parseInt(nm[0]);
+        int m = Integer.parseInt(nm[1]);
+		int arr[][]=new int[n][m];
+
+        if (n == 0) {
+            return arr;
+        }
+        
+
+		String[] strNums;
+        for (int i = 0; i < n; ++i) {            
+            strNums = br.readLine().split("\\s");
+            for (int j = 0; j < m; ++j){
+                arr[i][j] = Integer.parseInt(strNums[j]);
+            }
+            
+        }
+
+        return arr;
+    }
+
+	public static void main(String[] args) throws IOException {
+
+        int t = Integer.parseInt(br.readLine().trim());
+        while (t!=0){
+            int[][] grid = takeInput();
+            System.out.println(getMinimumStrength(grid));
+            t--;
+        }
+
+	}
+  public static int getMinimumStrength(int[][] grid) {
+        int n=grid.length;
+        int m=grid[0].length;
+        int dp[][]=new int[n][m];
+        dp[n-1][m-1]=grid[n-1][m-1];
+        for(int i=n-1;i>=0;i--)
+        {
+            for(int j=m-1;j>=0;j--)
+            {
+                
+                if(i==n-1&&j!=m-1)
+                {
+                    
+                    int a=grid[i][j]+dp[i][j+1];
+                    if(a>0)
+                    {
+                        dp[i][j]=0;
+                    }
+                    else
+                    dp[i][j]=a;
+                }
+                if(j==m-1&&i!=n-1)
+                {
+                    int b=grid[i][j]+dp[i+1][j];
+                    if(b>0)
+                    {
+                        dp[i][j]=0;
+                    }
+                    else
+                    dp[i][j]=b;
+                }
+                else if(i<n-1&&j<m-1)
+                {
+                    int c=grid[i][j]+Math.max(dp[i+1][j],dp[i][j+1]);
+                    if(c>0)
+                    {
+                        dp[i][j]=0;
+                    }
+                    else
+                    dp[i][j]=c;
+                }
+            }
+        }
+        return Math.abs(dp[0][0])+1;
+
+    }
+}
