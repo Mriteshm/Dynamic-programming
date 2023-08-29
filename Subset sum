@@ -1,0 +1,78 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+public class Runner {
+
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        int size = Integer.parseInt(br.readLine().trim());
+        int[] input = new int[size];
+
+        if (size == 0) {
+            System.out.print("No");
+            return;
+        }
+        
+		String[] strNums;
+		strNums = br.readLine().split("\\s");
+		
+        for (int i = 0; i < size; ++i) {
+            input[i] = Integer.parseInt(strNums[i]);
+        }
+
+        int sum = Integer.parseInt(br.readLine().trim());
+        if (isSubsetPresent(input,size,sum)){
+            System.out.print("Yes");
+        }
+        else{
+            System.out.print("No");
+        }
+
+
+    }
+ public static boolean helper(int []arr,boolean[][]dp,int sum)
+    { 
+         for(int i=0;i<dp.length;i++)
+         {
+             for(int j=0;j<=sum;j++)
+             {
+                 if(j==0)
+                 {
+                     dp[i][j]=true;
+                 }
+                 if(i==0&&j!=0)
+                 {
+                     dp[i][j]=false;
+                 }
+                 else if(i>0&&j>0)
+                 {
+                     if(arr[i-1]>j)
+                     {
+                         dp[i][j]=dp[i-1][j];
+                     }
+                     else{
+                        int sum1=j-arr[i-1];
+
+                         if(dp[i-1][sum1]||dp[i-1][j])
+                         {
+                            dp[i][j]=true;
+                         }
+                         else
+                         dp[i][j]=false;
+
+
+                     }
+                 }
+             }
+         }
+         return dp[dp.length-1][sum];
+
+
+    }
+    static boolean isSubsetPresent(int[] arr, int n, int sum) {
+          boolean[][]dp=new boolean[arr.length+1][sum+1];
+        
+           return helper(arr,dp,sum);
+    }
+}
