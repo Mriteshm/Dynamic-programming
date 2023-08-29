@@ -1,0 +1,77 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+public class Runner {
+
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    
+    public static int[] takeInput() throws IOException {
+        int size = Integer.parseInt(br.readLine().trim());
+        int[] input = new int[size];
+
+        if (size == 0) {
+            return input;
+        }
+        
+		String[] strNums;
+		strNums = br.readLine().split("\\s");
+		
+        for (int i = 0; i < size; ++i) {
+            input[i] = Integer.parseInt(strNums[i]);
+        }
+
+        return input;
+    }
+
+
+    public static void main(String[] args) throws NumberFormatException, IOException {
+
+
+        int[] arr = takeInput();
+        System.out.print(getMin(arr,arr.length));
+
+
+    }
+	public static int helper(int []arr,int[]dp1,int[]dp2)
+	{
+		for(int i=0;i<dp1.length;i++)
+		{
+			if(i!=0)//////////////////////left traversal
+			if(arr[i]>arr[i-1])
+			dp1[i]=dp1[i-1]+1;
+		}
+		for(int i=dp2.length-1;i>=0;i--)
+		{
+			if(i!=dp2.length-1)
+			if(arr[i]>arr[i+1])////////////right traversal
+			dp2[i]=dp2[i+1]+1;
+		}
+		for(int j=0;j<dp1.length;j++)
+		{
+           dp1[j]=Math.max(dp1[j],dp2[j]);////////////maximum of bboth of them
+		}
+		int count=0;
+		for(int i=0;i<dp1.length;i++)
+		{
+			count=count+dp1[i];///////////count of 
+		}
+		return count;
+	}
+
+	public static int getMin(int arr[], int N){
+        
+   
+    int[]dp1=new int[N];
+	for(int i=0;i<dp1.length;i++)
+	{
+		dp1[i]=1;
+	}
+	 int[]dp2=new int[N];
+	for(int i=0;i<dp2.length;i++)
+	{
+		dp2[i]=1;
+	}
+    return helper(arr,dp1,dp2);
+        
+    }
+}
