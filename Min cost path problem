@@ -1,0 +1,73 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Runner {
+
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    
+    public static int[][] take2DInput() throws IOException {
+        String[] strRowsCols = br.readLine().trim().split("\\s");
+        int mRows = Integer.parseInt(strRowsCols[0]);
+        int nCols = Integer.parseInt(strRowsCols[1]);
+
+        if (mRows == 0) {
+            return new int[0][0];
+        }
+
+
+        int[][] mat = new int[mRows][nCols];
+
+        for (int row = 0; row < mRows; row++) {
+            String[] strNums; 
+            strNums = br.readLine().trim().split("\\s");
+            
+            for (int col = 0; col < nCols; col++) {
+                mat[row][col] = Integer.parseInt(strNums[col]);
+            }
+        }
+
+        return mat;
+    }
+
+
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        int[][] mat = take2DInput();
+        System.out.println(minCostPath(mat));
+    }
+public static int minCostPath(int[][] input)
+	 {
+		 int n=input.length;
+		 int m=input[0].length;
+		 int[][] dp=new int[n][m];
+		// dp[n-1][m-1]=input[n][m];
+		 for(int i=n-1;i>=0;i--)
+		 {
+			 for(int j=m-1;j>=0;j--)
+			 {
+				 if(i==n-1&&j==m-1)/////make two 2D arrays and fill the Dp array from bottom.
+				 {
+				 dp[i][j]=input[n-1][m-1];
+				 }
+				 else if(i==n-1)
+				 {
+					 dp[i][j]=input[i][j]+dp[i][j+1];
+				 }
+				 else if(j==m-1)
+				 {
+					 dp[i][j]=input[i][j]+dp[i+1][j];
+				 }
+				 else
+				 {
+					 int a=input[i][j]+dp[i+1][j];
+					 int b=input[i][j]+dp[i][j+1];
+					 int c=input[i][j]+dp[i+1][j+1];
+					 dp[i][j]=Math.min(a,Math.min(b,c));
+				 }
+			 }
+
+		 }
+		 return dp[0][0];
+
+	}
+}
