@@ -1,0 +1,45 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Runner {
+
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        
+        String s = br.readLine().trim();
+        String t = br.readLine().trim();
+
+        
+        System.out.println(editDistance(s, t));
+    }
+	public static int helper(String s,String t,int i,int j)
+	{
+		if(i==s.length())
+		{
+			return t.length()-j;//length of remaining t string.
+		}
+		if(j==t.length())
+		{
+			return s.length()-i;
+		}
+		if(s.charAt(i)==t.charAt(j))
+		{
+			return helper(s,t,i+1,j+1);//length of remaining s string.
+		}
+		else
+		{
+			int insert=1+helper(s,t,i,j+1);
+			int delete=1+helper(s,t,i+1,j);
+			int replace=1+helper(s,t,i+1,j+1);
+			return Math.min(insert,Math.min(delete,replace));
+		}
+	}
+
+	public static int editDistance(String s, String t) 
+	{
+		return helper(s,t,0,0);
+    }
+
+}
